@@ -1,7 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChatRequestOptions } from "ai"
+import { SendHorizonal } from "lucide-react";
 import { ChangeEvent, FormEvent } from "react";
 
 interface ChatFormProps {
@@ -29,6 +31,9 @@ export const ChatForm = ({
         placeholder="Type a message"
         className="rounded-lg bg-primary/10"
       />
+      <Button disabled={isLoading} variant="ghost">
+        <SendHorizonal  className="h-6 w-6" />
+      </Button>
     </form>
   )
 }
