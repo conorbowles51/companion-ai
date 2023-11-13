@@ -1,3 +1,5 @@
+import dotenv from "dotenv"
+
 import { auth, currentUser } from "@clerk/nextjs";
 import { StreamingTextResponse, LangChainStream } from "ai";
 import { CallbackManager } from "langchain/callbacks"
@@ -8,7 +10,8 @@ import { MemoryManager } from "@/lib/memory";
 import { ratelimit } from "@/lib/rate-limit";
 import prismadb from "@/lib/prismadb";
 import { Ratelimit } from "@upstash/ratelimit";
-import { stat } from "fs";
+
+dotenv.config({path: `.env`});
 
 export async function POST(
     request:Request,
