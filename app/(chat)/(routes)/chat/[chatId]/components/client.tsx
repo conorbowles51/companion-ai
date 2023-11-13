@@ -1,11 +1,12 @@
 "use client";
 
-import { useCompletion } from "ai/react" 
-import { Companion, Message } from "@prisma/client";
-import { ChatHeader } from "./chat-header";
-import { useRouter } from "next/navigation";
+import { useCompletion } from "ai/react";
 import { FormEvent, useState } from "react";
+import { Companion, Message } from "@prisma/client";
+import { useRouter } from "next/navigation";
+
 import { ChatForm } from "./chat-form";
+import { ChatHeader } from "./chat-header";
 import { ChatMessages } from "./chat-messages";
 import { ChatMessageProps } from "./chat-message";
 
@@ -15,34 +16,34 @@ interface ChatClientProps {
     _count: {
       messages: number;
     }
-  }
-}
+  };
+};
 
 export const ChatClient = ({
-  companion
+  companion,
 }: ChatClientProps) => {
   const router = useRouter();
   const [messages, setMessages] = useState<ChatMessageProps[]>(companion.messages);
-
+  
   const {
     input,
     isLoading,
     handleInputChange,
     handleSubmit,
-    setInput
+    setInput,
   } = useCompletion({
     api: `/api/chat/${companion.id}`,
-    onFinish (prompt, completion) {
+    onFinish(_prompt, completion) {
       const systemMessage: ChatMessageProps = {
         role: "system",
         content: completion
       };
 
-      setMessages((current) => [...current, systemMessage])
+      setMessages((current) => [...current, systemMessage]);
       setInput("");
 
       router.refresh();
-    }
+    },
   });
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -51,24 +52,25 @@ export const ChatClient = ({
       content: input
     };
 
-    setMessages((current) => [...current, userMessage])
+    setMessages((current) => [...current, userMessage]);
+
     handleSubmit(e);
   }
 
-  return ( 
+  return (
     <div className="flex flex-col h-full p-4 space-y-2">
       <ChatHeader companion={companion} />
-      <ChatMessages
+      <ChatMessages 
         companion={companion}
         isLoading={isLoading}
         messages={messages}
       />
       <ChatForm 
-        isLoading={isLoading}
-        input={input}
-        handleInputChange={handleInputChange}
-        onSubmit={onSubmit}
+        isLoading={isLoading} 
+        input={input} 
+        handleInputChange={handleInputChange} 
+        onSubmit={onSubmit} 
       />
     </div>
-  );
+   );
 }
