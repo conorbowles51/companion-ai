@@ -37,7 +37,7 @@ export const SearchInput = () => {
     })
 
     router.push(url)
-  }, [debouncedValue, router])
+  }, [debouncedValue, router, categoryId])
 
   return (
     <div className="relative">
